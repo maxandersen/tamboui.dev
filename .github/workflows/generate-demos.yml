@@ -41,6 +41,7 @@ jobs:
             ./gradlew publishToMavenLocal -x test -x javadoc
         
       - name: prebuild demo jars
+        working-directory: tamboui
         run: |
             jbang alias list --format json | jq  '.[].name' | xargs -n1 jbang build
       
