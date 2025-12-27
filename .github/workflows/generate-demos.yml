@@ -30,6 +30,9 @@ jobs:
       
       - name: Install jbang
         uses: jbangdev/setup-jbang@main
+
+      - name: Configure snapshot repo
+        run: jbang config set run.repos central,sonatype-snapshots=https://central.sonatype.com/repository/maven-snapshots/
       
       - name: Clone tamboui repository
         run: |
