@@ -1,0 +1,83 @@
+name: Generate Demo Videos
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  generate-and-deploy:
+    runs-on: macos-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout tamboui.dev
+        uses: actions/checkout@v4
+        with:
+          path: tamboui-dev
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Install vhs (agentstation fork with SVG support)
+        run: |
+          # Homebrew is pre-installed on GitHub Actions macOS runners
+          # Install vhs from agentstation tap that supports SVG output
+          brew install agentstation/tap/vhs
+      
+      - name: Install jbang
+        uses: jbangdev/setup-jbang@v1
+      
+      - name: Clone tamboui repository
+        run: |
+          git clone https://github.com/tamboui/tamboui.git tamboui-repo
+      
+      - name: Generate demo videos
+        working-directory: tamboui-repo/docs/video
+        run: |
+          jbang generate.java svg
+      
+      - name: Setup Git for gh-pages
+        run: |
+          cd tamboui-dev
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Checkout gh-pages branch
+        run: |
+          cd tamboui-dev
+          git fetch origin gh-pages:gh-pages || true
+          git checkout gh-pages || git checkout -b gh-pages
+      
+      - name: Copy generated videos to demos directory
+        run: |
+          # Check if output directory exists and has files
+          if [ ! -d "tamboui-repo/docs/video/output" ]; then
+            echo "Error: output directory does not exist"
+            exit 1
+          fi
+          if [ -z "$(ls -A tamboui-repo/docs/video/output)" ]; then
+            echo "Error: output directory is empty"
+            exit 1
+          fi
+          # Remove old demos directory if it exists
+          rm -rf tamboui-dev/demos
+          # Create demos directory
+          mkdir -p tamboui-dev/demos
+          # Copy all files from output directory
+          cp -r tamboui-repo/docs/video/output/* tamboui-dev/demos/
+      
+      - name: Commit and push to gh-pages
+        run: |
+          cd tamboui-dev
+          git add demos/
+          if ! git diff --staged --quiet; then
+            git commit -m "Update demo videos [skip ci]"
+            git push origin gh-pages
+          else
+            echo "No changes to commit"
+          fi
+
