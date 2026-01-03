@@ -1,0 +1,26 @@
+<nav class="tb-nav">
+  {{#if page.navigation}}
+    {{#if (isString page.navigation)}}
+      {{{page.navigation}}}
+    {{else}}
+      <ul class="tb-nav__list">
+        {{#each page.navigation}}
+          <li class="tb-nav__item">
+            {{#if url}}
+              <a class="tb-nav__link" href="{{url}}">{{title}}</a>
+            {{else}}
+              <span class="tb-nav__text">{{title}}</span>
+            {{/if}}
+          </li>
+        {{/each}}
+      </ul>
+    {{/if}}
+  {{else}}
+    <ul class="tb-nav__list">
+      <li class="tb-nav__item">
+        <a class="tb-nav__link" href="{{siteRootPath}}">Home</a>
+      </li>
+    </ul>
+  {{/if}}
+</nav>
+

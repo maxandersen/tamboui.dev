@@ -1,0 +1,33 @@
+<header class="tb-header" role="banner">
+  <div class="tb-header__bar" aria-hidden="true">
+    <span class="tb-dot tb-dot--red"></span>
+    <span class="tb-dot tb-dot--amber"></span>
+    <span class="tb-dot tb-dot--green"></span>
+    <span class="tb-header__title">{{site.title}}</span>
+  </div>
+
+  <div class="tb-header__row">
+    <a class="tb-brand" href="{{siteRootPath}}">
+      <span class="tb-brand__prompt">$</span>
+      <span class="tb-brand__name">{{site.title}}</span>
+    </a>
+
+    <div class="tb-header__spacer"></div>
+
+    <div class="tb-controls" aria-label="Theme controls">
+      <button class="tb-button" type="button" data-action="toggle-theme" aria-label="Toggle dark/light mode">
+        Theme
+      </button>
+
+      <label class="tb-select__label" for="tb-palette">Palette</label>
+      <select class="tb-select" id="tb-palette" name="palette" data-action="palette">
+        <option value="jazz">Jazz Ink</option>
+        <option value="green">Green CRT</option>
+        <option value="amber">Amber CRT</option>
+        <option value="blue">Cobalt</option>
+        <option value="mono">Mono</option>
+      </select>
+    </div>
+  </div>
+</header>
+

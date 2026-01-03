@@ -1,0 +1,38 @@
+site:
+  title: tamboui.dev
+  start_page: home::index.adoc
+  url: https://tamboui.dev
+
+content:
+  sources:
+    - url: .
+      branches: HEAD
+      start_path: content/home
+    - url: ./build/cache/tamboui
+      branches: HEAD
+      start_path: antora
+
+ui:
+  bundle:
+    url: ./ui
+    snapshot: true
+
+asciidoc:
+  extensions:
+    - asciidoctor-kroki
+  attributes:
+    experimental: ''
+    sectanchors: ''
+    sectlinks: ''
+    icons: font
+    toc: left
+    toclevels: 3
+    kroki-server-url: https://kroki.io
+    kroki-fetch-diagram: true
+
+runtime:
+  fetch: false
+
+output:
+  clean: true
+  dir: ./build/site

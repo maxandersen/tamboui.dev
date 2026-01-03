@@ -93,6 +93,28 @@ jobs:
           mkdir -p tamboui.dev/demos
           # Copy all files from output directory
           cp -r tamboui/docs/video/output/* tamboui.dev/demos/
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tamboui.dev/package-lock.json
+
+      - name: Build Antora site (landing + docs)
+        working-directory: tamboui.dev
+        run: |
+          npm ci
+          npm run build
+
+      - name: Publish Antora output to gh-pages root (keep demos + CNAME)
+        working-directory: tamboui.dev
+        run: |
+          rsync -a --delete \
+            --exclude "demos" \
+            --exclude "CNAME" \
+            --exclude ".git" \
+            build/site/ ./
       
       - name: Commit and push to gh-pages
         run: |

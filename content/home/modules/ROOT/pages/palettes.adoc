@@ -1,0 +1,10 @@
+= Palettes
+:page-role: terminal
+
+The theme supports:
+
+* **Light / dark mode** toggle
+* Optional **terminal palette** selection (classic-ish schemes)
+
+If your browser supports `prefers-color-scheme`, the site will start in a matching mode unless you override it.
+
