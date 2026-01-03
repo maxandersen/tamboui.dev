@@ -1,0 +1,5 @@
+* xref:index.adoc[Home]
+* xref:diagram.adoc[Diagrams]
+* xref:palettes.adoc[Palettes]
+* xref:tamboui::index.adoc[Tamboui docs]
+

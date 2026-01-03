@@ -1,0 +1,240 @@
+:root {
+  --tb-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --tb-font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+
+  --tb-radius: 14px;
+  --tb-border: 1px solid var(--tb-line);
+  --tb-shadow: 0 16px 50px rgba(0, 0, 0, 0.35);
+
+  --tb-bg: #0b0e14;
+  --tb-bg2: #0f1421;
+  --tb-fg: #e8eaf0;
+  --tb-muted: rgba(232, 234, 240, 0.72);
+  --tb-line: rgba(232, 234, 240, 0.10);
+  --tb-ink: rgba(122, 162, 247, 0.16);
+  --tb-accent: #7aa2f7; /* default: "jazz ink" */
+  --tb-accent2: #c099ff;
+  --tb-warm: #f7c66a;
+  --tb-good: #9ece6a;
+  --tb-bad: #f7768e;
+}
+
+html[data-theme="light"] {
+  --tb-bg: #f8f7fb;
+  --tb-bg2: #ffffff;
+  --tb-fg: #11131a;
+  --tb-muted: rgba(17, 19, 26, 0.70);
+  --tb-line: rgba(17, 19, 26, 0.12);
+  --tb-ink: rgba(86, 81, 164, 0.10);
+  --tb-accent: #3c3a8e;
+  --tb-accent2: #0f7b6c;
+  --tb-warm: #b25a00;
+  --tb-good: #1c7c3c;
+  --tb-bad: #b4232c;
+}
+
+/* Optional classic terminal palettes */
+html[data-palette="green"] { --tb-accent: #7CFC00; --tb-accent2: #00ffa8; --tb-ink: rgba(124, 252, 0, 0.10); }
+html[data-palette="amber"] { --tb-accent: #ffbf00; --tb-accent2: #ff7a59; --tb-ink: rgba(255, 191, 0, 0.10); }
+html[data-palette="blue"]  { --tb-accent: #00b3ff; --tb-accent2: #7aa2f7; --tb-ink: rgba(0, 179, 255, 0.10); }
+html[data-palette="mono"]  { --tb-accent: #a8b3cf; --tb-accent2: #e8eaf0; --tb-ink: rgba(168, 179, 207, 0.10); }
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body.tb-body {
+  margin: 0;
+  color: var(--tb-fg);
+  background:
+    radial-gradient(900px 400px at 10% 8%, var(--tb-ink), transparent 70%),
+    radial-gradient(900px 400px at 85% 18%, rgba(192, 153, 255, 0.10), transparent 72%),
+    radial-gradient(1200px 600px at 50% 100%, rgba(247, 198, 106, 0.08), transparent 70%),
+    linear-gradient(180deg, var(--tb-bg), var(--tb-bg2));
+  font-family: var(--tb-font-sans);
+}
+
+a { color: var(--tb-accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Header */
+.tb-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  background: color-mix(in srgb, var(--tb-bg2) 70%, transparent);
+  border-bottom: var(--tb-border);
+}
+
+.tb-header__bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: var(--tb-border);
+}
+
+.tb-dot { width: 10px; height: 10px; border-radius: 999px; display: inline-block; opacity: 0.9; }
+.tb-dot--red { background: #ff5f56; }
+.tb-dot--amber { background: #ffbd2e; }
+.tb-dot--green { background: #27c93f; }
+.tb-header__title {
+  margin-left: 10px;
+  font-family: var(--tb-font-mono);
+  font-size: 12px;
+  color: var(--tb-muted);
+}
+
+.tb-header__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+}
+
+.tb-brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--tb-font-mono);
+  color: var(--tb-fg);
+}
+
+.tb-brand__prompt { color: var(--tb-good); }
+.tb-brand__name { letter-spacing: 0.2px; }
+
+.tb-header__spacer { flex: 1; }
+
+.tb-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--tb-font-mono);
+  font-size: 12px;
+}
+
+.tb-button {
+  appearance: none;
+  border: var(--tb-border);
+  background: color-mix(in srgb, var(--tb-bg2) 75%, transparent);
+  color: var(--tb-fg);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-family: var(--tb-font-mono);
+  cursor: pointer;
+}
+.tb-button:hover { border-color: color-mix(in srgb, var(--tb-accent) 40%, var(--tb-line)); }
+
+.tb-select__label { color: var(--tb-muted); }
+.tb-select {
+  border: var(--tb-border);
+  background: color-mix(in srgb, var(--tb-bg2) 75%, transparent);
+  color: var(--tb-fg);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-family: var(--tb-font-mono);
+}
+
+/* Layout */
+.tb-shell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 18px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 18px 14px 40px;
+}
+
+@media (max-width: 980px) {
+  .tb-shell { grid-template-columns: 1fr; }
+  .tb-sidebar { order: 2; }
+}
+
+.tb-sidebar {
+  border: var(--tb-border);
+  border-radius: var(--tb-radius);
+  background: color-mix(in srgb, var(--tb-bg2) 75%, transparent);
+  box-shadow: var(--tb-shadow);
+  padding: 12px;
+  height: fit-content;
+}
+
+.tb-main {
+  border: var(--tb-border);
+  border-radius: var(--tb-radius);
+  background: color-mix(in srgb, var(--tb-bg2) 75%, transparent);
+  box-shadow: var(--tb-shadow);
+  padding: 18px 18px 28px;
+  min-width: 0;
+}
+
+/* Navigation */
+.tb-nav__list { list-style: none; padding: 0; margin: 0; }
+.tb-nav__item { margin: 6px 0; }
+.tb-nav__link, .tb-nav__text {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-family: var(--tb-font-mono);
+  font-size: 13px;
+  color: var(--tb-fg);
+}
+.tb-nav__link:hover {
+  background: color-mix(in srgb, var(--tb-accent) 14%, transparent);
+  text-decoration: none;
+}
+
+/* Docs content */
+.doc {
+  font-family: var(--tb-font-sans);
+  line-height: 1.6;
+}
+
+.doc h1, .doc h2, .doc h3, .doc h4 {
+  font-family: var(--tb-font-mono);
+  letter-spacing: 0.2px;
+}
+.doc h1 { margin-top: 0; }
+.doc code, .doc pre, .doc kbd {
+  font-family: var(--tb-font-mono);
+}
+.doc pre {
+  border: var(--tb-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  overflow: auto;
+  background: color-mix(in srgb, var(--tb-bg) 70%, transparent);
+}
+.doc kbd {
+  border: var(--tb-border);
+  border-radius: 8px;
+  padding: 2px 6px;
+  background: color-mix(in srgb, var(--tb-bg) 70%, transparent);
+}
+.doc blockquote {
+  border-left: 3px solid color-mix(in srgb, var(--tb-accent) 55%, transparent);
+  margin: 14px 0;
+  padding: 6px 14px;
+  color: var(--tb-muted);
+}
+.doc hr {
+  border: 0;
+  border-top: var(--tb-border);
+  margin: 22px 0;
+}
+.doc .lede { color: var(--tb-muted); font-family: var(--tb-font-mono); }
+
+/* Footer */
+.tb-footer {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 14px 26px;
+}
+.tb-footer__inner {
+  border-top: var(--tb-border);
+  padding-top: 14px;
+  color: var(--tb-muted);
+  font-family: var(--tb-font-mono);
+  font-size: 12px;
+}
+

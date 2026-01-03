@@ -1,0 +1,28 @@
+= Diagrams
+:page-role: terminal
+
+This page is here to validate that diagram rendering is enabled in the Antora pipeline.
+
+NOTE: Antora uses Asciidoctor.js; instead of the Ruby `asciidoctor-diagram` gem, this site enables diagram blocks via `asciidoctor-kroki`.
+
+== PlantUML
+
+[plantuml, tamboui-hello, svg]
+----
+@startuml
+skinparam backgroundColor transparent
+skinparam defaultFontName "ui-monospace"
+
+title tamboui.dev
+
+actor User
+rectangle "Antora site" {
+  component "UI (terminal jazz theme)" as UI
+  component "Docs content" as DOCS
+}
+
+User --> UI : toggles theme
+UI --> DOCS : renders pages
+@enduml
+----
+

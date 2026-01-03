@@ -1,0 +1,16 @@
+{
+  "name": "tamboui-dev-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare:content": "node ./scripts/prepare-content.mjs",
+    "build": "npm run prepare:content && antora --stacktrace antora-playbook.yml",
+    "build:clean": "rm -rf build/site build/cache",
+    "serve": "npx --yes http-server ./build/site -p 8080"
+  },
+  "dependencies": {
+    "antora": "3.1.14",
+    "asciidoctor-kroki": "^0.18.1",
+    "marked": "^15.0.6"
+  }
+}

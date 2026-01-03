@@ -1,0 +1,6 @@
+name: home
+title: tamboui.dev
+version: ~
+nav:
+  - modules/ROOT/nav.adoc
+

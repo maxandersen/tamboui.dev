@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{> head}}
+  </head>
+  <body class="tb-body">
+    {{> header}}
+
+    <div class="tb-shell">
+      <aside class="tb-sidebar" aria-label="Site navigation">
+        {{> nav}}
+      </aside>
+
+      <main class="tb-main">
+        <article class="doc">
+          {{{page.contents}}}
+        </article>
+      </main>
+    </div>
+
+    {{> footer}}
+    <script src="{{uiRootPath}}/js/site.js"></script>
+  </body>
+</html>
+

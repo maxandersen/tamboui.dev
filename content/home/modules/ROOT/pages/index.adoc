@@ -1,0 +1,21 @@
+= tamboui.dev
+:page-layout: home
+:page-role: terminal
+
+Welcome to **tamboui.dev** — a terminal-minded home for Tamboui docs and demos.
+
+[.lede]
+This site is generated with Antora and styled with a shared “terminal + cool ink” theme that supports **dark/light mode** (and optional classic palettes).
+
+== Quick links
+
+* xref:tamboui::index.adoc[Tamboui docs]
+* xref:diagram.adoc[Asciidoctor Diagram support]
+* link:../demos/[Demos]
+
+== What this site is
+
+* A single Antora site (landing + docs)
+* Docs content is fetched from the `tamboui/tamboui` repository during the build
+* `asciidoctor-diagram` is enabled
+
