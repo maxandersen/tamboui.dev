@@ -1,4 +1,4 @@
-name: Generate Demo Videos
+name: Generate Site
 
 on:
   push:
@@ -14,6 +14,9 @@ jobs:
     runs-on: macos-latest
     permissions:
       contents: write
+    env:
+      builtdocs: tamboui/docs/build/docs
+      sitedocs: tamboui.dev/docs/main
     
     steps:
       - name: Checkout tamboui.dev
@@ -21,34 +24,20 @@ jobs:
         with:
           path: tamboui.dev
           token: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Install vhs (agentstation fork with SVG support)
-        run: |
-          # Homebrew is pre-installed on GitHub Actions macOS runners
-          # Install vhs from agentstation tap that supports SVG output
-          brew install agentstation/tap/vhs
-      
-      - name: Install jbang
-        uses: jbangdev/setup-jbang@main
-
+  
       - name: Clone tamboui repository
         run: |
           git clone https://github.com/tamboui/tamboui.git tamboui
-
-      - name: build and publish to maven local
-        working-directory: tamboui
-        run: |
-            ./gradlew publishToMavenLocal -x test -x javadoc
-        
-      - name: prebuild demo jars
-        working-directory: tamboui
-        run: |
-            jbang alias list --format json | jq  '.[].name' | xargs -n1 jbang build
+       
+      # TODO: maybe we dont build here but take it from tamboui build artifacts?
+      - uses: gradle/actions/wrapper-validation@v4
       
-      - name: Generate demo videos
-        working-directory: tamboui/docs/video
-        run: |
-          jbang generate.java svg
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Execute Gradle docs build
+        working-directory: tamboui
+        run: ./gradlew asciidoc
       
       - name: Setup Git for gh-pages
         run: |
@@ -79,20 +68,20 @@ jobs:
       - name: Copy generated videos to demos directory
         run: |
           # Check if output directory exists and has files
-          if [ ! -d "tamboui/docs/video/output" ]; then
-            echo "Error: output directory does not exist"
+          if [ ! -d "${{ env.builtdocs }}" ]; then
+            echo "Error: built docs directory does not exist"
             exit 1
           fi
-          if [ -z "$(ls -A tamboui/docs/video/output)" ]; then
-            echo "Error: output directory is empty"
+          if [ -z "$(ls -A ${{ env.builtdocs }})" ]; then
+            echo "Error: built docs directory is empty"
             exit 1
           fi
-          # Remove old demos directory if it exists
-          rm -rf tamboui.dev/demos
-          # Create demos directory
-          mkdir -p tamboui.dev/demos
+          # Remove old docs directory if it exists
+          rm -rf ${{ env.sitedocs }}
+          # Create docs directory
+          mkdir -p ${{ env.sitedocs }}
           # Copy all files from output directory
-          cp -r tamboui/docs/video/output/* tamboui.dev/demos/
+          cp -r ${{ env.builtdocs }}/* ${{ env.sitedocs }}/
       
       - name: Commit and push to gh-pages
         run: |
