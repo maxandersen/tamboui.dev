@@ -87,6 +87,8 @@ jobs:
           mkdir -p ${{ env.sitedocs }}
           # Copy all files from output directory
           cp -r ${{ env.builtdocs }}/* ${{ env.sitedocs }}/
+          # add .nojekyll file to docs directory
+          touch tabmoui.dev/.nojekyll
       
       - name: Commit and push to gh-pages
         run: |
