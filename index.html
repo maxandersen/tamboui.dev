@@ -37,6 +37,89 @@
             overflow-x: hidden;
         }
 
+        /* Sticky top banner */
+        .top-banner {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(10, 14, 39, 0.78);
+            border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .top-banner-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .top-banner-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+        }
+
+        .top-banner-brand:hover {
+            color: var(--accent-primary);
+        }
+
+        .top-banner-logo {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            border: 1px solid rgba(51, 65, 85, 0.7);
+            background: rgba(20, 27, 45, 0.5);
+        }
+
+        .top-banner-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .top-banner-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.45rem 0.75rem;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .top-banner-link:hover {
+            color: var(--accent-primary);
+            border-color: rgba(0, 212, 255, 0.35);
+            background: rgba(0, 212, 255, 0.06);
+        }
+
+        .top-banner-cta {
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            border-color: transparent;
+            box-shadow: 0 4px 18px rgba(0, 212, 255, 0.15);
+        }
+
+        .top-banner-cta:hover {
+            color: var(--text-primary);
+            border-color: transparent;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            box-shadow: 0 8px 26px rgba(0, 212, 255, 0.25);
+            transform: translateY(-1px);
+        }
+
         /* Hero Section */
         .hero {
             min-height: 100vh;
@@ -465,6 +548,27 @@
             color: var(--text-primary);
         }
 
+        /* Ensure token spans never get a background */
+        .code-block code,
+        .code-block code span {
+            background: transparent;
+        }
+
+        /* Ensure code text stays readable on dark background */
+        .code-block code {
+            color: var(--text-primary);
+        }
+
+        .inline-code {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Consolas', monospace;
+            font-size: 0.95em;
+        }
+
         .code-block .keyword { color: #c792ea; }
         .code-block .string { color: #c3e88d; }
         .code-block .comment { color: var(--text-muted); font-style: italic; }
@@ -657,8 +761,46 @@
             }
         }
 
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            html:focus-within {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+
+            /* Explicitly disable continuous/key animations used on this page */
+            .hero::before,
+            .logo-image,
+            .hero-title,
+            .tagline,
+            .subtagline,
+            .hero-description,
+            .cta-buttons,
+            .scroll-indicator,
+            .sparkle {
+                animation: none !important;
+            }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
+            .top-banner-inner {
+                padding: 0.65rem 1rem;
+            }
+
+            .top-banner-link {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.95rem;
+            }
+
             .hero-title {
                 font-size: 2.5rem;
             }
@@ -716,11 +858,25 @@
     </style>
 </head>
 <body>
+    <header class="top-banner" role="banner">
+        <div class="top-banner-inner">
+            <a class="top-banner-brand" href="./" aria-label="TamboUI home">
+                <img class="top-banner-logo" src="assets/images/tamboui-icon.png" alt="" aria-hidden="true">
+                <span>TamboUI</span>
+            </a>
+            <nav class="top-banner-nav" aria-label="Primary">
+                <a class="top-banner-link" href="docs/main" target="_blank" rel="noopener noreferrer">Docs</a>
+                <a class="top-banner-link" href="docs/main/demos-widgets.html" target="_blank" rel="noopener noreferrer">Examples</a>
+                <a class="top-banner-link" href="https://github.com/tamboui/tamboui" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a class="top-banner-link top-banner-cta" href="docs/main" target="_blank" rel="noopener noreferrer">Get started</a>
+            </nav>
+        </div>
+    </header>
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
             <h1 class="sr-only">TamboUI</h1>
-            <img src="assets/images/tambuilogo.png" alt="TamboUI" class="logo-image">
+            <img src="assets/images/tamboui-logo.png" alt="TamboUI" class="logo-image">
             <h2 class="hero-title">Terminals with a little bit of spice<span class="sparkle">😊</span></h2>
             <p class="tagline">Build beautiful, modern terminal interfaces in Java</p>
             <p class="hero-description">
@@ -871,7 +1027,7 @@
 <code></pre>
             </div>
             <p style="text-align: center; margin-top: 2rem; color: var(--text-secondary);">
-                Save as <code style="background: var(--code-bg); padding: 0.25rem 0.5rem; border-radius: 4px;">HelloWorld.java</code> and run with <code style="background: var(--code-bg); padding: 0.25rem 0.5rem; border-radius: 4px;">jbang HelloWorld.java</code>
+                Save as <code class="inline-code">HelloWorld.java</code> and run with <code class="inline-code">jbang HelloWorld.java</code>
             </p>
         </div>
     </section>
