@@ -28,7 +28,7 @@ jobs:
         run: |
           cd tamboui.dev
           mkdir -p ../main-files
-          cp * ../main-files/ 2>/dev/null || true
+          cp -r * ../main-files/ 2>/dev/null || true
           rm ../main-files/README.md || true
           
       - name: Checkout gh-pages branch
